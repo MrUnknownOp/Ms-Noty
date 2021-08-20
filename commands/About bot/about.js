@@ -30,7 +30,7 @@ module.exports = {
 				`<a:arrow:877146642749468702> ** Channels:** ${client.channels.cache.size}`,
 				`<a:arrow:877146642749468702> ** Creation Date:** ${utc(client.user.createdTimestamp).format('Do MMMM YYYY HH:mm:ss')}`,
 				`<a:arrow:877146642749468702> ** Node.js:** ${process.version}`,
-				`<a:arrow:877146642749468702> ** Version:** v5.06`,
+				`<a:arrow:877146642749468702> ** Version:** v5.10`,
 				`<a:arrow:877146642749468702> ** Discord.js:** v${djsversion}`,
 				'\u200b'
 			])
