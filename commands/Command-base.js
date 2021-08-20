@@ -1,5 +1,5 @@
+const { MessageEmbed } = require('discord.js');
 const { prefix } = require('../config.json')
-const profileModel = require("../schemas/profile-schema");
 
 
 const validatePermissions = (permissions) => {
@@ -39,31 +39,19 @@ const validatePermissions = (permissions) => {
 
   for (const permission of permissions) {
     if (!validPermissions.includes(permission)) {
-      throw new Error(`Unknown permission node "${permission}"`)
+      console.log(`Unknown permission node "${permission}"`);
     }
   }
 }
 
 let recentlyRan = [] // guildId-userId-command
 
-module.exports = async(client, commandOptions) => {
+const allCommands = {};
 
-  
-
-  
-
-
+module.exports = async(commandOptions) => {
   let {
     commands,
-    expectedArgs = '',
-    permissionError = 'You do not have permission to run this command.',
-    minArgs = 0,
-    maxArgs = null,
-    cooldown = -1,
-    cooldownmsg = 'You cannot use that command so soon, please wait for',
     permissions = [],
-    requiredRoles = [],
-    callback,
   } = commandOptions
 
   if(!commands)
@@ -86,24 +74,87 @@ module.exports = async(client, commandOptions) => {
     }
 
     validatePermissions(permissions)
+  }   
+
+
+  for (const command of commands)
+  {
+    allCommands[command] = {
+      ...commandOptions,
+      commands,
+      permissions
+    } 
   }
+}
+
+
+
+module.exports.listen = (client) => {
+
+  const profileModel = require('../schemas/profile-schema')
 
   // Listen for messages
   client.on('message', async(message) => {
     const { member, content, guild, channel } = message
 
-    for (const alias of commands) {
-      const command = `${prefix}${alias.toLowerCase()}`
+    // Split on any number of spaces
+    const arguments = content.split(/[ ]+/)
 
-      if (
-        content.toLowerCase().startsWith(`${command} `) ||
-        content.toLowerCase() === command
-      ) {
-        
+    // Remove the command which is the first index
+    const name = arguments.shift().toLowerCase();
+
+    if(name.startsWith(prefix))
+    {
+      const command = allCommands[name.replace(prefix, '')]
+      if(!command)
+      {
+        return
+      }
+
+      let profileData;
+        try {
+          profileData = await profileModel.findOne({ userID: message.author.id });
+          if (!profileData) {
+            let profile = await profileModel.create({
+              userID: message.author.id,
+              lb: "all",
+              coins: 1000,
+              bank: 0,
+              Space: 1000,
+            });
+            profile.save();
+          }
+        } catch (err) {
+          console.log(err);
+        }
+
+      const {
+        expectedArgs = '',
+        permissionError = 'You do not have permission to run this command.',
+        minArgs = 0,
+        maxArgs = null,
+        cooldown = -1,
+        cooldownmsg = 'You cannot use that command so soon, please wait for',
+        permissions,
+        requiredRoles = [],
+        callback,
+      } = command;
+
+      const developer = '𝙈𝙍. 𝙐𝙉𝙆𝙉𝙊𝙒𝙉#6969'
+      
+      
         // Ensure the user has the required permissions
         for (const permission of permissions) {
           if (!member.hasPermission(permission)) {
-            message.reply(permissionError)
+
+            const permembed = new MessageEmbed()
+            .setTitle('Error!!')
+            .setDescription(`${permissionError}`)
+            .setTimestamp()
+            .setColor('RED')
+            .setThumbnail(client.user.displayAvatarURL({dynamic : true}))
+            .setFooter(`MADE BY ${developer}` , `${message.author.displayAvatarURL({dynamic : true})}`)
+            message.lineReply(permembed)
             return
           }
         }
@@ -117,37 +168,50 @@ module.exports = async(client, commandOptions) => {
           )
 
           if (!role || !member.roles.cache.has(role.id)) {
-            message.reply(
-              `You must have the "${requiredRole}" role to use this command.`
-            )
+            const rolembed = new MessageEmbed()
+            .setTitle('Error!!')
+            .setDescription(`You must have the "${requiredRole}" role to use this command.`)
+            .setTimestamp()
+            .setColor('RED')
+            .setThumbnail(client.user.displayAvatarURL({dynamic : true}))
+            .setFooter(`MADE BY ${developer}` , `${message.author.displayAvatarURL({dynamic : true})}`)
+            message.lineReply(rolembed)
             return
           }
         }
 
         // Ensure the user has not ran this command too frequently
         //guildId-userId-command
-        let cooldownString = `${guild.id}-${member.id}-${commands[0]}`
+        let cooldownString = `${guild.id}-${member.id}-${command}`
         console.log('cooldownString:', cooldownString)
 
         if (cooldown > 0 && recentlyRan.includes(cooldownString)) {
-          message.reply(`${cooldownmsg} ${cooldown} seconds`)
+          const cembed = new MessageEmbed()
+            .setTitle('Error!!')
+            .setDescription(`${cooldownmsg} ${cooldown} seconds`)
+            .setTimestamp()
+            .setColor('RED')
+            .setThumbnail(client.user.displayAvatarURL({dynamic : true}))
+            .setFooter(`MADE BY ${developer}` , `${message.author.displayAvatarURL({dynamic : true})}`)
+            message.lineReply(cembed)
           return
         }
 
-        // Split on any number of spaces
-        const arguments = content.split(/[ ]+/)
-
-        // Remove the command which is the first index
-        arguments.shift()
+        
 
         // Ensure we have the correct number of arguments
         if (
           arguments.length < minArgs ||
           (maxArgs !== null && arguments.length > maxArgs)
         ) {
-          message.reply(
-            `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
-          )
+          const sembed = new MessageEmbed()
+            .setTitle('Error!!')
+            .setDescription(`Incorrect syntax! Use ${name} ${expectedArgs}`)
+            .setTimestamp()
+            .setColor('RED')
+            .setThumbnail(client.user.displayAvatarURL({dynamic : true}))
+            .setFooter(`MADE BY ${developer}` , `${message.author.displayAvatarURL({dynamic : true})}`)
+            message.lineReply(sembed)
           return
         }
         if (cooldown > 0) {
@@ -163,31 +227,11 @@ module.exports = async(client, commandOptions) => {
             console.log('After:', recentlyRan)
           }, 1000 * cooldown)
         }
-        let profileData;
-        try {
-          profileData = await profileModel.findOne({ userID: message.author.id });
-          if (!profileData) {
-            let profile = await profileModel.create({
-              userID: message.author.id,
-              serverID: message.guild.id,
-              tcoins: 1000,
-              bank: 0,
-            });
-            profile.save();
-          }
-        } catch (err) {
-          console.log(err);
-        }
 
          // Handle the custom command code
-        callback(message, arguments, arguments.join(' '), client , profileData)
+        callback(message, arguments, arguments.join(' '), client, profileData)
 
         
-      }
     }
   })
-
-            
-       
-
 }

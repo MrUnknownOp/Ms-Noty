@@ -131,7 +131,7 @@ module.exports = (client)=>{
         } else if (Command.toLowerCase() == "volume" || Command.toLowerCase() == "vol") {
 
            if (!msg.member.voice.channel) return msg.channel.send('You must be in a voice channel to use this command.');
-            //if(arguments > 100) return msg.channel.send(`Really you want to harm your ears  ${msg.author}`);
+            if(arguments > 300) return msg.channel.send(`Really you want to harm your ears  ${msg.author}`);
             try {
                 client.distube.setVolume(msg, arguments[0]);
             embedbuilder(client, msg, "RED", "Volume Changed", `Volume has been changed to ${arguments[0]}`)

@@ -27,7 +27,7 @@ module.exports = {
                 });
                 message.channel.send('Muted role has sucessfully been created.')
             } catch (error) {
-                message.channel.send('There was an error will creating the role,please try again in some time')
+                message.channel.send('There was an error while creating the role,please try again in some time')
             }
         } else if (role)
         {

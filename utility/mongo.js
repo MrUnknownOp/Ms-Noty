@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 //const { mongoPath } = require('../config.json')
 const mongoPath = 'mongodb+srv://shashank:shashankisop@cluster0.3yxxn.mongodb.net/TRIDENT?retryWrites=true&w=majority'
 
- const user = '721232818822447106'
 
 module.exports = async () => {
   try {

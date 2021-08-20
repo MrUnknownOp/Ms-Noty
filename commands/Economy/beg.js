@@ -1,27 +1,44 @@
-const profileModel = require("../../schemas/profile-schema");
+const profile = require('../../schemas/profile-schema')
+const {users} = require('./names.json')
 module.exports = {
-    commands: 'beg',
-    minArgs: 0,
-    maxArgs: 0,
-    permissions: [],
-  
-    callback: async(message) => {
-      try {
-        const randomNumber = Math.floor(Math.random() * 500) + 1;
-    const response = await profileModel.findOneAndUpdate(
-      {
-        userID: message.author.id,
-      },
-      {
-        $inc: {
-          tcoins: randomNumber,
+
+
+
+    commands:'beg',
+    minArgs : 0,
+    maxArgs : 0,
+    callback: async(message, arguments, text, client) => {
+
+        const { guild, author } = message
+       
+        const randomCoins = Math.floor(Math.random() * 499) + 1;
+        const amount = 50;
+
+        const result = await profile.findOneAndUpdate({
+
+            userID: author.id
         },
-      }
-    );
-    return message.channel.send(`${message.author.username}, you begged and received ${randomNumber} **Noty(s)**`);
-      } catch (error) {
-        message.channel.send(error)
-      }
+        {
+
+            userID: author.id,
+            $inc:{
+                coins: randomCoins,
+                bankSpace: amount
+            }
+        },
+        {
+            upsert: true
+        }
+        )
+
+        const ans = await profile.findOne({userID: author.id})
+
+        
+
+        var beggeduser = Math.floor(Math.random() * users.length)
     
-  },
-};
+       await message.channel.send(`You begged and **${users[beggeduser]}** gave you ${randomCoins} Noty(s), Now you have ${ans.coins} Noty(s)`)
+    
+    }
+
+}

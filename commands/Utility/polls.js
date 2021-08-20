@@ -16,9 +16,12 @@ module.exports = {
         .setTitle('Server Poll!!!')
         .setDescription(pollDescription)
         .setColor('RANDOM')
-        let msgEmbed =  pollChannel.send(embedPoll);
-        await msgEmbed.react('👍')
-        await msgEmbed.react('👎')
+
+        pollChannel.send({embed: embedPoll}).then(embedMessage => {
+            embedMessage.react('👍');
+            embedMessage.react('👎');
+        });
+    
    
         } catch (err) {
             message.channel.send(`I can't send poll due to ${err}`)

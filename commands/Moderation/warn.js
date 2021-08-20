@@ -27,8 +27,7 @@ module.exports = {
       reason,
     }
 
-    await mongo().then(async (mongoose) => {
-      try {
+ 
         await warnSchema.findOneAndUpdate(
           {
             guildId,
@@ -45,10 +44,7 @@ module.exports = {
             upsert: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
-      }
-    })
+     
     const embed = new Discord.MessageEmbed()
     .setTitle('Someone Was Warned!!')
     .setColor('RED')

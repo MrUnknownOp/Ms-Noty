@@ -1,4 +1,5 @@
 const { badwords } = require("./words.json") 
+const feature = require('../../schemas/Feature-schema')
 
 
 module.exports = (client) => {
@@ -18,12 +19,38 @@ module.exports = (client) => {
             {
               return;
             }
+            if (msg.author.bot) return;
+
+            const { guild } = msg;
+
+            const cache = {}
+    
+            let data = cache[guild.id]
+    
+        if (!data) {
+    
+          
+              const result = await feature.findOne({ _id: guild.id })
+                if(result === null) return
+              cache[guild.id] = data = [result.antiswear]
+          
+          
+        }
+    
+        if(data)
+        {
+            const OnEnabled = data[0]
+    
+        
+    
+        if(OnEnabled === true)
+        {
     
             const { member } = msg
     
             if(!member) return
     
-            if(!msg.member.hasPermission("MANAGE_MESSAGES")) {
+            if(msg.member.hasPermission("MANAGE_MESSAGES")) {
                 let confirm = false;
                 var i;
                 for(i = 0;i < badwords.length; i++) {
@@ -42,6 +69,10 @@ module.exports = (client) => {
             
                 
             }
+
+        }
+
+    }
             
         } catch (err) {
 

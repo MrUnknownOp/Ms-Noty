@@ -1,7 +1,8 @@
 {
-    "token": " Your token lol ",
+    "token": "Nzc0MjI1NTEyMzczNTUxMTE1.X6Ursg.swA8U6MPoqBnRl6Jen490JudqK8",
     "prefix": "<",
-    "mongoPath": "mongodb://localhost:27017/MsNoty"
+    "mongoPath": "mongodb://localhost:27017/MsNoty",
+    "monke" : "X4Ulg1VkyD1mPbewMBZwvY0cA"
     
 }
 

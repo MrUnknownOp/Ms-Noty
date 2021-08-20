@@ -18,8 +18,7 @@ module.exports = {
     const guildId = message.guild.id
     const userId = target.id
 
-    await mongo().then(async (mongoose) => {
-      try {
+   
         const results = await warnSchema.findOne({
           guildId,
           userId,
@@ -42,11 +41,5 @@ module.exports = {
         //     
         // }
         message.reply(embed)
-      } catch (err){
-        message.channel.send("You are lucky, you haven't been warned here till now!!" )
-      } finally {
-        mongoose.connection.close()
-      }
-    })
   },
 }
