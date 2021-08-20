@@ -36,7 +36,7 @@ module.exports = {
 
             .setDescription(`<a:arrow:877146642749468702> **Global-Prefix :-** \`<\`\n
             **<a:arrow:877146642749468702> Server-Prefix :-** \`${serverprfix}\`\n
-            **<a:arrow:877146642749468702> Version :-** \`5.06\`\n
+            **<a:arrow:877146642749468702> Version :-** \`5.10\`\n
             `)
             .addField('**Currency :-**', '`Noty(s)`')
             .setTimestamp()
