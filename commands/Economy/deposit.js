@@ -1,29 +1,83 @@
-const profileModel = require("../../schemas/profile-schema");
+const profile = require('../../schemas/profile-schema')
+
+
 module.exports = {
-    commands: ['deposit','dep'],
+
+    commands:['dep','deposit'],
     minArgs: 1,
     maxArgs: 1,
-    permissions: [],
-    callback:async(message, arguments, profileData) => {
-    const amount = arguments[0];
-    if (amount % 1 != 0 || amount <= 0) return message.channel.send("Deposit amount must be a whole number");
-    try {
-      if (amount > profileData.coins) return message.channel.send(`You don't have that amount of Noty(s) to deposit`);
-      await profileModel.findOneAndUpdate(
+    expectedArgs:'<amount of Noty(s)>',
+    callback: async(message, arguments, text, client) => {
+       const {guild, author} = message
+
+       const money = arguments[0];
+
+       if(isNaN(money) && arguments[0].toLowerCase() === "all" || arguments[0].toLowerCase() === "max")
+       {
+                    
+                const ans = await profile.findOne({userID:author.id})
+
+                let spaceLeft;
+
+                spaceLeft = ans.Space - ans.bank;
+
+                console.log(spaceLeft)
+
+                if(money > ans.coins) return message.reply(`You don't have ${money} Noty(s) to deposit`)
+                if(money > spaceLeft) return message.reply(`You don't have enough bank space to deposit`)
+
+                    await profile.findOneAndUpdate(
+                    {
+                        userID: author.id,
+                    },
+                    {
+
+                        userID: author.id,
+                        $inc:{
+                            bank: spaceLeft,
+                            coins: -spaceLeft,
+                        }
+                    },
+                    {
+                        upsert: true
+                })
+
+                message.reply(`Deposited all Noty(s)!! into your bank account!`)
+           return
+       } else {
+
+       
+
+       
+       const ans = await profile.findOne({userID:author.id})
+
+       let spaceLeft;
+
+       spaceLeft = ans.Space - ans.bank;
+
+       console.log(spaceLeft)
+
+       if(money > ans.coins) return message.reply(`You don't have ${money} Noty(s) to deposit`)
+       if(money > spaceLeft) return message.reply(`You don't have enough bank space to deposit`)
+
+        await profile.findOneAndUpdate(
         {
-          userID: message.author.id,
+            userID: author.id,
         },
         {
-          $inc: {
-            tcoins: -amount,
-            bank: amount,
-          },
-        }
-      );
 
-      return message.channel.send(`You deposited ${amount} of Noty(s) into your bank`);
-    } catch (err) {
-      message.channel.send(err)
+            userID: author.id,
+            $inc:{
+                bank: money,
+                coins: -money,
+            }
+        },
+        {
+            upsert: true
+       })
+
+       message.reply(`Deposited ${money} Noty(s)!! into your bank account!`)
     }
-  },
-};
+    }
+
+}

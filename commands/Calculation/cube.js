@@ -9,10 +9,10 @@ module.exports = {
         arguments.forEach((value) => {
             cu = cu*cu*cu
         })
-        message.channel.send("Cube of " + arguments + " is " + cu.toString());
+        message.reply("Cube of " + arguments + " is " + cu.toString());
     
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
         
     },

@@ -10,7 +10,7 @@ module.exports = {
         
         callback: (message, arguments, text,client) => {
             const member = message.mentions.members.first() 
-            if(!member)  return  message.channel.send('Please specify a member')
+            if(!member)  return  message.reply('Please specify a member')
         
             new tictactoe({
                 player_two: member, 

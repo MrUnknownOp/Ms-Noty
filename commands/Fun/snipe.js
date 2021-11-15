@@ -18,13 +18,13 @@ module.exports = {
             .setTimestamp();
 
             if(msg){
-                message.channel.send(embed);
+                message.channel.send({embeds:[embed]});
             }
             else{
-                message.channel.send("Nothing to snipe lol");
+                message.reply("Nothing to snipe lol");
             }
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
 
         

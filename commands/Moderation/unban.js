@@ -12,9 +12,9 @@ module.exports = {
 
         message.guild.members.unban(toBan);
       
-        message.channel.send(`<@${toBan}> has been unbanned from the server!`)
+        message.reply(`<@${toBan}> has been unbanned from the server!`)
         } catch (error) {
-            message.lineReply(error)
+            message.reply(error)
         }
         
     },

@@ -10,9 +10,9 @@ module.exports = {
             arguments.forEach((value) => {
                 curt = Math.cbrt(curt)
             })
-            message.channel.send("Cube root of " + arguments + " is " + curt.toString());
+            message.reply("Cube root of " + arguments + " is " + curt.toString());
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
        
 

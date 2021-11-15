@@ -9,9 +9,9 @@ module.exports = {
         arguments.forEach((value) => {
             product = product * parseFloat(value);
         })
-        message.channel.send("Idiot you didn't even know that product of " + arguments + " is " + product.toString());
+        message.reply("Idiot you didn't even know that product of " + arguments + " is " + product.toString());
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
     
     },

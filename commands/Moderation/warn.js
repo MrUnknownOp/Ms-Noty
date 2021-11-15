@@ -27,8 +27,7 @@ module.exports = {
       reason,
     }
 
-    await mongo().then(async (mongoose) => {
-      try {
+ 
         await warnSchema.findOneAndUpdate(
           {
             guildId,
@@ -45,10 +44,7 @@ module.exports = {
             upsert: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
-      }
-    })
+     
     const embed = new Discord.MessageEmbed()
     .setTitle('Someone Was Warned!!')
     .setColor('RED')
@@ -67,7 +63,7 @@ module.exports = {
         {name: 'reason:', value: `${reason}`, inline: false}
     )
     //.setFooter(`Made by ${Developer}`, client.user.displayAvatarURL());
-    message.channel.send(embed)
-    target.send(useembed)
+    message.reply({embeds:[embed]})
+    target.send({embeds:[useembed]})
   },
 }

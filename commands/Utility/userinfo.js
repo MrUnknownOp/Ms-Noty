@@ -19,13 +19,14 @@ const flags = {
 };
 
 module.exports = {
-    commands: 'userinfo',
+    commands: ['userinfo','whois', 'ui'],
     expectedArgs: '[usertag]',
     minArgs: 0,
     maxArgs: 1,
 
     callback: async(message, arguments, text) => {
         try {
+            
             //const target = arguments[0];
 		const member = message.mentions.members.first() || message.member;
 		const roles = member.roles.cache
@@ -36,27 +37,26 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }))
 			.setColor(member.displayHexColor || 'BLUE')
-			.addField('User', [
-				`**❯ Username:** ${member.user.username}`,
-				`**❯ Discriminator:** ${member.user.discriminator}`,
-				`**❯ ID:** ${member.id}`,
-				`**❯ Flags:** ${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None'}`,
-				`**❯ Avatar:** [Link to avatar](${member.user.displayAvatarURL({ dynamic: true })})`,
-				`**❯ Time Created:** ${moment(member.user.createdTimestamp).format('LT')} ${moment(member.user.createdTimestamp).format('LL')} ${moment(member.user.createdTimestamp).fromNow()}`,
-				`**❯ Status:** ${member.user.presence.status}`,
-				`**❯ Game:** ${member.user.presence.game || 'Not playing a game.'}`,
-				`\u200b`
-			])
-			.addField('Member', [
-				`**❯ Highest Role:** ${member.roles.highest.id === message.guild.id ? 'None' : member.roles.highest.name}`,
-				`**❯ Server Join Date:** ${moment(member.joinedAt).format('LL LTS')}`,
-				`**❯ Hoist Role:** ${member.roles.hoist ? member.roles.hoist.name : 'None'}`,
-				`**❯ Roles** [${roles.length}]`,
-				`\u200b`
-			]);
-		return message.channel.send(embed);
+			.setDescription(`User
+				**❯ Username:** ${member.user.username},
+				**❯ Discriminator:** ${member.user.discriminator},
+				**❯ ID:** ${member.id},
+				**❯ Flags:** ${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None'},
+				**❯ Avatar:** [Link to avatar](${member.user.displayAvatarURL({ dynamic: true })}),
+				**❯ Time Created:** ${moment(member.user.createdTimestamp).format('LT')} ${moment(member.user.createdTimestamp).format('LL')} ${moment(member.user.createdTimestamp).fromNow()},
+				**❯ Game:** ${member.user.presence.game || 'Not playing a game.'},
+				\u200b
+			
+			Member
+				**❯ Highest Role:** ${member.roles.highest.id === message.guild.id ? 'None' : member.roles.highest.name},
+				**❯ Server Join Date:** ${moment(member.joinedAt).format('LL LTS')},
+				**❯ Hoist Role:** ${member.roles.hoist ? member.roles.hoist.name : 'None'},
+				**❯ Roles** [${roles.length}],
+				\u200b`
+			)
+		return message.reply({embeds:[embed]});
         } catch (err) {
-            message.channel.send(err)
+            console.log(err)
         }
         
 	}

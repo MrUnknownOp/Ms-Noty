@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { MessageEmbed } = require("discord.js");
 const Developer = "MR. UNKNOWN OP#3635"
 
 module.exports = {
@@ -19,7 +18,7 @@ module.exports = {
     .setTitle(`My Uptime is **${days}d ${hours}h ${minutes}m ${seconds}s**`)
     .setFooter(`Made by ${Developer}`, client.user.displayAvatarURL());
     
-    message.channel.send(upembed)
+    message.reply({embeds:[upembed]})
     }
   
 }

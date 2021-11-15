@@ -36,7 +36,7 @@ module.exports = {
         message.reply(replyText)
       })
     } catch (err) {
-      message.lineReply(err)
+      message.reply(err)
     }
     
   },

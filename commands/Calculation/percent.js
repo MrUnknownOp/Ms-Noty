@@ -13,9 +13,9 @@ module.exports = {
             per = ((parseFloat(value) / per) * 100);
         })
          
-        message.channel.send(arguments[0] +" is "+ per + " % of " + arguments[1]);
+        message.reply(arguments[0] +" is "+ per + " % of " + arguments[1]);
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
         
     

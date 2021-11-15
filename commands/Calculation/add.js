@@ -9,9 +9,9 @@ module.exports = {
         arguments.forEach((value) => {
             sum = sum + parseFloat(value);
         })
-        message.channel.send("Idiot you didn't even know that sum of " + arguments + " is " + sum.toString());
+        message.reply("Idiot you didn't even know that sum of " + arguments + " is " + sum.toString());
       } catch (err) {
-        message.channel.send(err)
+        message.reply(err)
       }
          
     },

@@ -9,9 +9,9 @@ module.exports = {
             arguments.forEach((value) => {
                 diff = parseFloat(value) - diff;
             })
-            message.channel.send("Idiot you didn't even know that difference of " + arguments + " is " + diff.toString());
+            message.reply("Idiot you didn't even know that difference of " + arguments + " is " + diff.toString());
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
         
     },

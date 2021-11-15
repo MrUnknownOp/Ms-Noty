@@ -1,31 +1,71 @@
-const profileModel = require("../../schemas/profile-schema");
+const profile = require('../../schemas/profile-schema')
+
+
 module.exports = {
-    commands: ['withdraw','wd'],
+
+    commands:['wd','withdraw'],
     minArgs: 1,
     maxArgs: 1,
-    permissions: [],
-    callback:async(message, arguments, profileData) => {
-    const amount = arguments[0];
-    if (amount % 1 != 0 || amount <= 0) return message.channel.send("Withdrawn amount must be a whole number");
+    expectedArgs:'<amount of Noty(s)>',
+    callback: async(message, arguments, text, client) => {
+        const {guild, author} = message
 
-    try {
-      if (amount > profileData.bank) return message.channel.send(`You don't have that amount of ***Noty(s)*** to withdraw`);
-
-      await profileModel.findOneAndUpdate(
+        const money = arguments[0];
+ 
+        if(isNaN(money) && arguments[0].toLowerCase() === "all" || arguments[0].toLowerCase() === "max")
         {
-          userID: message.author.id,
-        },
-        {
-          $inc: {
-            tcoins: amount,
-            bank: -amount,
-          },
-        }
-      );
+                     
+                 const ans = await profile.findOne({userID:author.id})
 
-      return message.channel.send(`You withdrew ${amount} of ***Noty(s)*** into your wallet`);
-    } catch (err) {
-      message.channel.send(err)
+
+                 let bankc = ans.bank
+                
+                 
+ 
+                     await profile.findOneAndUpdate(
+                     {
+                         userID: author.id,
+                     },
+                     {
+ 
+                         userID: author.id,
+                         $inc:{
+                             bank: -bankc,
+                             coins: bankc,
+                         }
+                     },
+                     {
+                         upsert: true
+                 })
+ 
+                 message.reply(`Withdrawn all Noty(s)!! into your wallet!`)
+            return
+        } else {
+ 
+        
+ 
+        
+        const ans = await profile.findOne({userID:author.id})
+ 
+ 
+         await profile.findOneAndUpdate(
+         {
+             userID: author.id,
+         },
+         {
+ 
+             userID: author.id,
+             $inc:{
+                 bank: -money,
+                 coins: money,
+             }
+         },
+         {
+             upsert: true
+        })
+ 
+        message.reply(`Withdrawn ${money} Noty(s)!! into your Wallet!`)
+     }
     }
-  },
-};
+
+}

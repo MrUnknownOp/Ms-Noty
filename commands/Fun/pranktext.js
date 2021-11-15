@@ -12,7 +12,7 @@ module.exports = {
             const pranked = arguments.join(" ")
             message.channel.send("```" +  pranked + "```")
         } catch (err) {
-            message.channel.send(`I can't help you to text due to ${err}`)
+            message.reply(`I can't help you to text due to ${err}`)
         }
 
         

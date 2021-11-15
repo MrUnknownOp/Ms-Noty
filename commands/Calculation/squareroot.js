@@ -9,9 +9,9 @@ module.exports = {
             arguments.forEach((value) => {
                 sqt = Math.sqrt(sqt)
             })
-            message.channel.send("Square root of " + arguments + " is " + sqt.toString());
+            message.reply("Square root of " + arguments + " is " + sqt.toString());
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
         
 

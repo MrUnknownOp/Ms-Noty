@@ -28,7 +28,7 @@ module.exports = {
         embed.setFooter(`👍 ${memeUpvotes} 👎 ${memeDownvotes} 💬 ${memeNumComments}`)
         //embed.setDescription(`Made by ${Developer}  ${client.user.displayAvatarURL()}`)
         //embed.setFooter(`Made by ${Developer}`, client.user.displayAvatarURL());
-        message.channel.send(embed);
+        message.channel.send({embeds:[embed]});
         })
         } catch (error) {
             message.channel.send(error)

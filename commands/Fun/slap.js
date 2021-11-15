@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js')
+
 module.exports = {
     commands: 'slap',
     minArgs: 1,
@@ -12,11 +14,16 @@ module.exports = {
         return
         }
 
+        const embed = new MessageEmbed()
+        .setTitle('**Get Slapped LOL.....**')
+        .setDescription( `${message.author} slapped ${target}`)
+        .setColor('GREEN')
+        .setTimestamp()
+       // .setThumbnail(client.user.displayAvatarURL({dynamic : true}))
+        .setImage('https://cdn.discordapp.com/attachments/861956359095713832/863799368301019156/anime-Slap.gif')
         
         
-        message.channel.send(`${message.author} slapped ${target}`).then((msg) => {
-            msg.channel.send("https://tenor.com/view/no-angry-anime-slap-gif-7355956")
-          })
+        message.channel.send({embeds:[embed]});
 
                 
                

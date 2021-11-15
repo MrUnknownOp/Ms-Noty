@@ -1,56 +1,89 @@
-const path = require('path')
-const Discord = require('discord.js');
+const feature = require('../../schemas/Feature-schema')
+
 module.exports = (client) => {
 
-    client.on('message' , async (receivedMessage) => {
+    client.on('messageCreate' , async (msg) => {
 
         try {
-                if(receivedMessage.author == client.user)
+                if(msg.author == client.user)
             {
                 return;
             }
         
-            if(receivedMessage.channel.type == 'dm')
+            if(msg.channel.type == 'dm')
             {
             return;
             }
+            if (msg.author.bot) return;
 
-            if(receivedMessage.content.toLowerCase().startsWith("hi") || receivedMessage.content.toLowerCase().startsWith("Hillo") || receivedMessage.content.toLowerCase().startsWith("Hello") )
+            
+
+
+            const { guild } = msg;
+
+            const cache = {}
+    
+            let data = cache[guild.id]
+    
+        if (!data) {
+    
+          
+              const result = await feature.findOne({ _id: guild.id })
+                if(result === null) return
+              cache[guild.id] = data = [result.greetevent]
+          
+          
+        }
+    
+        if(data)
+        {
+            const OnEnabled = data[0]
+    
+        
+    
+        if(OnEnabled === true)
+        {
+
+            if(msg.content.toLowerCase().startsWith("hi") || msg.content.toLowerCase().startsWith("Hillo") || msg.content.toLowerCase().startsWith("Hello") )
             {
-                receivedMessage.lineReply("Hello :love_you_gesture: ");
+                msg.reply("Hello :love_you_gesture: ");
             } 
-            else if(receivedMessage.content.toLowerCase() == "sir" )
+            else if(msg.content.toLowerCase() == "sir" )
             {
-                receivedMessage.lineReply("Yess Sir!!!! :eyes:  ");
+                msg.reply("Yess Sir!!!! :eyes:  ");
             }
-            else if(receivedMessage.content.toLowerCase() == "mam" )
+            else if(msg.content.toLowerCase() == "mam" )
             {
-                receivedMessage.lineReply("Yess Ma'am!!!! :eyes:  ");
+                msg.reply("Yess Ma'am!!!! :eyes:  ");
             } 
-            else if(receivedMessage.content.toLowerCase().startsWith("namaste"))
+            else if(msg.content.toLowerCase().startsWith("namaste"))
             {
-            receivedMessage.lineReply("Namasteji :pray:   ");
+            msg.reply("Namasteji :pray:   ");
             }
-            else if(receivedMessage.content.toLowerCase().startsWith("evening") || receivedMessage.content.toLowerCase().startsWith("good evening"))
+            else if(msg.content.toLowerCase().startsWith("evening") || msg.content.toLowerCase().startsWith("good evening"))
             {
-            receivedMessage.lineReply("Good Evening bruhh :love_you_gesture:    ");
+            msg.reply("Good Evening bruhh :love_you_gesture:    ");
             } 
-            else if(receivedMessage.content.toLowerCase().startsWith("gud ebening"))
+            else if(msg.content.toLowerCase().startsWith("gud ebening"))
             {
-            receivedMessage.lineReply("Good Evening sir!!!! :smiling_imp:    ");
+            msg.reply("Good Evening sir!!!! :smiling_imp:    ");
             } 
-            else if(receivedMessage.content.toLowerCase().startsWith("moring") || receivedMessage.content.toLowerCase().startsWith("Good morning"))
+            else if(msg.content.toLowerCase().startsWith("moring") || msg.content.toLowerCase().startsWith("Good morning"))
             {
-            receivedMessage.lineReply("Good Morning :yawning_face:     ");
+            msg.reply("Good Morning :yawning_face:     ");
             }
-            else if(receivedMessage.content.toLowerCase().startsWith("night") || receivedMessage.content.toLowerCase().startsWith("Good night"))
+            else if(msg.content.toLowerCase().startsWith("night") || msg.content.toLowerCase().startsWith("Good night"))
             {
-            receivedMessage.lineReply("Good Night :sleeping:      ");
+            msg.reply("Good Night :sleeping:      ");
             }
             else 
             {
             return;
             } 
+
+        }
+
+    }
                 
         } catch (err) {
             console.log(err)

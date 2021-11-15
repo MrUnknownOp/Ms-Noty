@@ -30,9 +30,9 @@ module.exports = {
                 .setTimestamp()
                 .setFooter(`MADE BY ${developer}` , `${message.author.displayAvatarURL({dynamic : true})}`)
     
-                 message.channel.send(heheboi)
+                 message.reply({embeds:[heheboi]})
             } catch (error) {
-                message.channel.send(error)
+                message.reply(error)
             }
            
     

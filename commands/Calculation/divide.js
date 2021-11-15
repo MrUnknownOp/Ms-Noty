@@ -9,9 +9,9 @@ module.exports = {
         arguments.forEach((value) => {
             que = parseFloat(value) / que;
         })
-        message.channel.send("Idiot you didn't even know that quotient of " + arguments + " is " + que.toString());
+        message.reply("Idiot you didn't even know that quotient of " + arguments + " is " + que.toString());
         } catch (err) {
-            message.channel.send(err)
+            message.reply(err)
         }
         
     },
