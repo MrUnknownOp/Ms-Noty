@@ -1,7 +1,8 @@
-  
 const mongoose = require('mongoose')
 
+
 const messageCountSchema = mongoose.Schema({
+
   // The user ID
   _id: {
     type: String,
