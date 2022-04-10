@@ -1,12 +1,15 @@
-const mongoose = require('mongoose')
 
 
+const mongoose = require("mongoose");
 
 const profileSchema = new mongoose.Schema({
-    userID: { type: String, require: true, unique: true },
-    serverID: { type: String, require: true },
-    tcoins: { type: Number, default: 1000 , required: true},
-    bank: { type: Number },
-  });
+  userID: { type: String, required: true, unique: true },
+  coins: { type: Number, default: 1000 },
+  lb: { type: String , required: true },
+  bank: { type: Number },
+  Space: { type: Number, default: 1000 },
+});
 
-module.exports = mongoose.model('profiles', profileSchema)
+const model = mongoose.model("ProfileModels", profileSchema);
+
+module.exports = model;
