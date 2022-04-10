@@ -15,7 +15,7 @@
     "got": "^11.8.2",
     "html-entities": "^2.3.2",
     "merge-options": "^3.0.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "mongoose": "^6.0.12",
     "pretty-ms": "^7.0.1",
     "wokcommands": "^1.5.3"
